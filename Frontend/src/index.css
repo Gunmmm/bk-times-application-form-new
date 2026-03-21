@@ -1,0 +1,129 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+  line-height: 1.4;
+  color: black;
+  background: white;
+  margin: 0;
+  padding: 0;
+}
+
+@page {
+  size: A4;
+  margin: 15mm;
+}
+
+.page {
+  width: 210mm;
+  min-height: 297mm;
+  padding: 15mm;
+  page-break-after: always;
+}
+
+.page:last-child {
+  page-break-after: avoid;
+}
+
+@media print {
+  body { 
+    -webkit-print-color-adjust: exact; 
+    print-color-adjust: exact; 
+  }
+  .page { page-break-after: always; }
+  .page:last-child { page-break-after: avoid; }
+}
+
+@media screen {
+  body { max-width: 800px; margin: 20px auto; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+}
+
+h1 {
+  color: #1e3a8a;
+  text-align: center;
+  margin: 0 0 10px;
+  font-size: 18px;
+}
+
+h2 {
+  background: #bfdbfe;
+  padding: 8px;
+  margin: 20px 0 10px;
+  border: 1px solid #93c5fd;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.input-box {
+  border: 1px solid #333 !important;
+  height: 25px;
+  padding: 4px;
+  font-size: 11px;
+  background: white;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.checkbox-group {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.checkbox-item {
+  display: flex;
+  align-items: center;
+  font-size: 11px;
+}
+
+.checkbox-item input[type="checkbox"] {
+  width: 15px;
+  height: 15px;
+  margin-right: 5px;
+}
+
+.photo-placeholder,
+.signature-box {
+  border: 2px dashed #333;
+  width: 60mm;
+  height: 40mm;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  text-align: center;
+  margin: 10px 0;
+  background: #f9f9f9;
+}
+
+.two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.dob {
+  display: grid;
+  grid-template-columns: 40px 40px 60px;
+  gap: 5px;
+}
+
+.inline-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+  gap: 10px;
+}
