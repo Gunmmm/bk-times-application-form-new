@@ -28,13 +28,11 @@ export default function Header({ showNav = true }) {
           {/* Left: identity */}
           <span className="text-[10px] sm:text-xs font-black text-gray-400 uppercase tracking-widest text-center sm:text-left flex items-center gap-2">
             <span>{user?.role === 'admin' ? '👑 Master Admin Panel' : 
-                   user?.role === 'zone' ? '🗺️ Zone Coordinator Panel' :
+                   (user?.role === 'zone' || user?.role === 'zone_coordinator') ? '🗺️ Regional Coordinator Panel' :
                    user?.role === 'district' ? '🏛️ District Coordinator Panel' :
                    user?.role === 'taluka' ? '🏛️ Taluka Coordinator Panel' :
                    user?.role === 'village' ? '🏘️ Village Coordinator Panel' : 
                    user?.role ? `👤 ${user?.role.toUpperCase()} Panel` : 'Guest Panel'}</span>
-            <span className="opacity-40">|</span>
-            <span>Reporter Manager</span>
           </span>
 
           {/* Right: actions */}

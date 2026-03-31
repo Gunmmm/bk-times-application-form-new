@@ -7,7 +7,8 @@ const settingsSchema = new mongoose.Schema({
     district: { type: Number, default: 13 },
     taluka: { type: Number, default: 13 },
     zone: { type: Number, default: 13 },
-    village: { type: Number, default: 12 }
+    village: { type: Number, default: 12 },
+    ads: { type: Number, default: 18 }
   },
   permissions: {
     district: { canAdd: { type: Boolean, default: true }, canEdit: { type: Boolean, default: true }, canDelete: { type: Boolean, default: false }, canView: { type: Boolean, default: true } },

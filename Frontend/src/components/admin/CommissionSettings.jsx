@@ -6,7 +6,8 @@ export default function CommissionSettings({ settings, onUpdate }) {
     zone: 18,
     district: 15,
     taluka: 13,
-    village: 12
+    village: 12,
+    ads: 18
   });
   const [loading, setLoading] = useState(false);
 
@@ -16,7 +17,8 @@ export default function CommissionSettings({ settings, onUpdate }) {
         zone: settings.commissions.zone || 18,
         district: settings.commissions.district || 15,
         taluka: settings.commissions.taluka || 13,
-        village: settings.commissions.village || 12
+        village: settings.commissions.village || 12,
+        ads: settings.commissions.ads || 18
       });
     }
   }, [settings]);
@@ -30,7 +32,8 @@ export default function CommissionSettings({ settings, onUpdate }) {
           zone: Number(commissions.zone),
           district: Number(commissions.district),
           taluka: Number(commissions.taluka),
-          village: Number(commissions.village)
+          village: Number(commissions.village),
+          ads: Number(commissions.ads)
         }
       });
       alert('🚀 Global Commission Registry Updated! All coordinator dashboards will sync in real-time.');
@@ -50,10 +53,11 @@ export default function CommissionSettings({ settings, onUpdate }) {
   };
 
   const roles = [
-    { key: 'zone', label: 'Zone Coordinator', icon: Globe, color: 'text-purple-600', bg: 'bg-purple-50', barColor: 'bg-purple-600' },
+    { key: 'zone', label: 'Regional Coordinator', icon: Globe, color: 'text-purple-600', bg: 'bg-purple-50', barColor: 'bg-purple-600' },
     { key: 'district', label: 'District Coordinator', icon: MapPin, color: 'text-blue-600', bg: 'bg-blue-50', barColor: 'bg-blue-600' },
     { key: 'taluka', label: 'Taluka Coordinator', icon: Briefcase, color: 'text-orange-600', bg: 'bg-orange-50', barColor: 'bg-orange-600' },
     { key: 'village', label: 'Village Coordinator', icon: Home, color: 'text-green-600', bg: 'bg-green-50', barColor: 'bg-green-600' },
+    { key: 'ads', label: 'News / ADV Commissions', icon: Percent, color: 'text-rose-600', bg: 'bg-rose-50', barColor: 'bg-rose-600' },
   ];
 
   return (

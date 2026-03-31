@@ -16,12 +16,12 @@ export default function StatsAds() {
       .catch(() => setLoading(false));
   }, [token]);
 
-  // Derive ads from readers (each reader is assigned a slot of ads based on their plan)
+  // Derive ads from readers (each reader is assigned a slot of ADV based on their plan)
   const adsPerPlan = { '1 Year': 50, '2 Year': 120, '3 Year': 200 };
   const BASE_ADS = 456;
 
   const readerAds = readers.map((r, i) => ({
-    adNo: `AD-${String(i + 1).padStart(4, '0')}`,
+    adNo: `ADV-${String(i + 1).padStart(4, '0')}`,
     reader: r.fullName || 'Unknown',
     email: r.email,
     plan: r.plan,
@@ -39,8 +39,8 @@ export default function StatsAds() {
 
   return (
     <DetailPageWrapper
-      title="Total Ads Running"
-      subtitle={`${totalAds} ads total across ${readers.length} reader slot(s)`}
+      title="Total ADV Running"
+      subtitle={`${totalAds} ADV total across ${readers.length} reader slot(s)`}
     >
       {/* Filter Bar */}
       <div className="flex gap-2 my-3 flex-wrap">
@@ -58,14 +58,14 @@ export default function StatsAds() {
       </div>
 
       {loading ? (
-        <p className="text-gray-400 animate-pulse">Loading ads data...</p>
+        <p className="text-gray-400 animate-pulse">Loading ADV data...</p>
       ) : (
         <div className="space-y-5">
           {/* Summary Box */}
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
             <div className="bg-white rounded-xl border border-gray-200 p-4 text-center">
               <div className="text-2xl font-extrabold text-purple-600">{totalAds}</div>
-              <div className="text-xs text-gray-500 mt-1">Total Ads</div>
+              <div className="text-xs text-gray-500 mt-1">Total ADV</div>
             </div>
             <div className="bg-white rounded-xl border border-gray-200 p-4 text-center">
               <div className="text-2xl font-extrabold text-green-600">{readerAds.length}</div>
@@ -79,17 +79,17 @@ export default function StatsAds() {
 
           {/* Ads Table */}
           {filtered.length === 0 ? (
-            <p className="text-gray-400">No ads match this filter.</p>
+            <p className="text-gray-400">No ADV match this filter.</p>
           ) : (
             <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-x-auto">
               <table className="w-full text-sm">
                 <thead className="bg-gray-50 text-gray-500 uppercase text-xs">
                   <tr>
-                    <th className="px-4 py-3 text-left">Ad #</th>
+                    <th className="px-4 py-3 text-left">ADV #</th>
                     <th className="px-4 py-3 text-left">Reader</th>
                     <th className="px-4 py-3 text-left">Plan</th>
-                    <th className="px-4 py-3 text-right">Ad Slots</th>
-                    <th className="px-4 py-3 text-right">Revenue</th>
+                    <th className="px-4 py-3 text-right">ADV Slots</th>
+                    <th className="px-4 py-3 text-right">Revenue Earned</th>
                     <th className="px-4 py-3 text-center">Status</th>
                   </tr>
                 </thead>

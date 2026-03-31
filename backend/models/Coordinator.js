@@ -9,6 +9,7 @@ const coordinatorSchema = new mongoose.Schema({
   district: { type: String },
   taluka:   { type: String },
   village:  { type: String },
+  coordinatorCode: { type: String, unique: true, sparse: true },
   isActive: { type: Boolean, default: true },
   createdAt: { type: Date, default: Date.now }
 });

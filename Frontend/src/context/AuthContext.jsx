@@ -15,10 +15,19 @@ export const AuthProvider = ({ children }) => {
       if (token) {
         const storedUser = localStorage.getItem('userData');
         const storedRole = localStorage.getItem('role');
-        if (storedUser) {
+        const storedEmail = localStorage.getItem('userEmail');
+        
+        // Purge hardcoded legacy email if it exists in browser storage
+        if (storedEmail === 'admin@ricotta.portal') {
+          localStorage.removeItem('userEmail');
+          localStorage.removeItem('userData');
+          localStorage.removeItem('token');
+          setUser(null);
+          setToken(null);
+        } else if (storedUser) {
           setUser(JSON.parse(storedUser));
         } else if (storedRole) {
-          setUser({ email: localStorage.getItem('userEmail') || 'admin@ricotta.portal', role: storedRole });
+          setUser({ email: storedEmail || '', role: storedRole });
         }
       }
       setLoading(false);
@@ -40,7 +49,7 @@ export const AuthProvider = ({ children }) => {
     setLoading(true);
     setError('');
     try {
-      const response = await fetch('http://localhost:5000/api/auth/login', {
+      const response = await fetch('/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password, role, ...details }),

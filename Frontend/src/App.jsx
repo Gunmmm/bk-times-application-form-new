@@ -47,14 +47,27 @@ import PublicNewsStories from './pages/PublicNewsStories';
 import NewsStoryDetail from './pages/NewsStoryDetail';
 import PortalLogin from './pages/Login';
 
-const ProtectedRoute = ({ children }) => {
-  const { token, loading } = useAuth();
+const ProtectedRoute = ({ children, allowedRoles }) => {
+  const { token, loading, user } = useAuth();
+  
   if (loading) return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
       <div className="text-navy animate-pulse text-lg font-bold tracking-widest uppercase">Verifying Session...</div>
     </div>
   );
-  return token ? children : <Navigate to="/login" replace />;
+
+  if (!token) return <Navigate to="/login" replace />;
+
+  if (allowedRoles && user) {
+    const userRole = user.role;
+    // Admin bypasses all checks, others must match the allowed list
+    if (userRole !== 'admin' && !allowedRoles.includes(userRole)) {
+      console.warn(`Access Denied: Role ${userRole} is not authorized for this route.`);
+      return <Navigate to="/dashboard" replace />;
+    }
+  }
+
+  return children;
 };
 
 const DashboardRedirect = () => {
@@ -643,10 +656,10 @@ const SuccessModal = ({ isOpen, onClose, formData, onDownloadPDF, onDownloadDoc 
 
         <div className="p-6 bg-gray-50 border-t border-taupe flex flex-col gap-3">
           <button
-            onClick={() => navigate('/portal-login-form')}
+            onClick={() => navigate('/login')}
             className="w-full bg-navy text-white h-12 rounded-xl font-black uppercase tracking-widest text-xs hover:bg-black transition-all shadow-xl active:scale-95 flex items-center justify-center gap-2"
           >
-            <LogIn size={20} /> Login Portal Reporters Login Portal
+            <LogIn size={20} /> Login Portal
           </button>
           <button
             onClick={onClose}
@@ -660,60 +673,6 @@ const SuccessModal = ({ isOpen, onClose, formData, onDownloadPDF, onDownloadDoc 
   );
 };
 
-const PortalLoginPage = () => {
-  const navigate = useNavigate();
-  return (
-    <div className="flex-1 flex flex-col items-center justify-center p-6 bg-gray-50/50">
-      <div className="w-full max-w-md bg-white rounded-[2.5rem] shadow-[0_20px_50px_rgba(0,0,0,0.1)] border border-taupe overflow-hidden animate-in zoom-in-95 duration-500">
-        <div className="bg-navy p-8 text-center text-white relative">
-          <h2 className="text-2xl font-black uppercase tracking-tight">Reporter Portal</h2>
-
-          <p className="text-steppergold opacity-80 text-[10px] font-black uppercase tracking-widest mt-1">Access your account details</p>
-        </div>
-
-        <div className="p-8 space-y-4">
-          <button
-            onClick={() => navigate('/login')}
-            className="w-full bg-navy text-white h-14 rounded-2xl font-black uppercase tracking-widest text-sm hover:shadow-2xl transition-all shadow-lg active:scale-95 flex items-center justify-center gap-2"
-          >
-            <LogIn size={20} /> Login
-          </button>
-
-          <button
-            onClick={() => navigate('/forgot-password')}
-            className="w-full bg-gray-50 text-navy border border-navy/20 h-14 rounded-2xl font-black uppercase tracking-widest text-sm hover:bg-gray-100 transition-all shadow-sm active:scale-95 flex items-center justify-center gap-2"
-          >
-            <ShieldCheck size={20} /> Password Reset
-          </button>
-
-          <div className="relative py-4 flex items-center">
-            <div className="flex-grow border-t border-taupe"></div>
-            <span className="flex-shrink mx-4 text-gray-300 font-black text-xs uppercase tracking-widest">or</span>
-            <div className="flex-grow border-t border-taupe"></div>
-          </div>
-
-          <button
-            onClick={() => navigate('/register')}
-            className="w-full bg-steppergold/10 text-navy border-2 border-steppergold h-14 rounded-2xl font-black uppercase tracking-widest text-sm hover:bg-steppergold/20 transition-all shadow-md active:scale-95"
-          >
-            Registration
-          </button>
-
-          <button
-            onClick={() => navigate('/register')}
-            className="w-full bg-white text-maroon-500 border border-maroon-200 h-14 rounded-2xl font-black uppercase tracking-widest text-sm hover:bg-maroon-50 transition-all shadow-sm active:scale-95"
-          >
-            New Registration
-          </button>
-        </div>
-
-        <div className="p-6 bg-gray-50 border-t border-taupe text-center">
-          <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">BK TIMES News Network • Dedicated Journalism</p>
-        </div>
-      </div>
-    </div>
-  );
-};
 
 const ForgotPasswordRoute = () => {
   const [email, setEmail] = useState('');
@@ -797,7 +756,7 @@ const LoginRoute = ({ formData, setFormData, handleInputChange }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [captchaVerified, setCaptchaVerified] = useState(false);
   const queryRole = new URLSearchParams(window.location.search).get('role');
-  const [role, setRole] = useState(queryRole || 'village_coordinator');
+  const [role, setRole] = useState(queryRole || 'reporter');
   const { login } = useAuthContext();
 
   const onLogin = async () => {
@@ -1425,6 +1384,7 @@ const Step2 = ({ formData, handleInputChange, handleFileChange }) => (
       <div className="lg:col-span-2"><InputField label="Email ID" name="email" value={formData.email} readOnly /></div>
 
       <div className="lg:col-span-2"><InputField label="Date of Birth" name="dob" type="date" min="1900-01-01" max={new Date().toISOString().split('T')[0]} value={formData.dob} onChange={handleInputChange} required /></div>
+      <div className="lg:col-span-2"><InputField label="Gender" name="gender" options={["MALE", "FEMALE", "TRANSGENDER", "OTHER"]} value={formData.gender} onChange={handleInputChange} required /></div>
       <div className="lg:col-span-2 flex flex-col justify-end pb-[2px]">
         <label className="text-[10px] font-bold text-gray-700 uppercase mb-1">Age</label>
         <div className="bg-gray-50 border border-taupe flex items-center justify-center text-[10px] font-black text-black rounded shadow-inner h-8 md:h-10 w-full uppercase tracking-tight">
@@ -2171,7 +2131,14 @@ const MainApp = () => {
     const saved = localStorage.getItem('bk_form_data');
     if (saved) {
       try {
-        return JSON.parse(saved);
+        const parsed = JSON.parse(saved);
+        // Purge legacy demo email if it persists in user's browser
+        if (parsed.loginIdentifier === 'admin@ricotta.portal') {
+           parsed.loginIdentifier = '';
+           parsed.loginPassword = '';
+           localStorage.setItem('bk_form_data', JSON.stringify(parsed));
+        }
+        return parsed;
       } catch (e) {
         console.error("Error parsing saved form data", e);
       }
@@ -2449,21 +2416,20 @@ const MainApp = () => {
       <Header />
 
       <Routes>
-        <Route path="/" element={<Navigate to="/portal-login" />} />
+        <Route path="/" element={<Navigate to="/login" />} />
         <Route path="/login" element={<LoginRoute formData={formData} setFormData={setFormData} handleInputChange={handleInputChange} />} />
         <Route path="/forgot-password" element={<ForgotPasswordRoute />} />
-        <Route path="/portal-login" element={<PortalLoginPage />} />
         <Route path="/portal-login-form" element={<PortalLogin />} />
         <Route path="/register" element={<RegistrationRoute formData={formData} setFormData={setFormData} handleInputChange={handleInputChange} otpProps={otpProps} />} />
         <Route path="/form" element={<FormRoute formData={formData} setFormData={setFormData} handleInputChange={handleInputChange} handleFileChange={handleFileChange} />} />
         
         {/* Portal Routes */}
         <Route path="/dashboard" element={<ProtectedRoute><DashboardRedirect /></ProtectedRoute>} />
-        <Route path="/dashboard/admin" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />
-        <Route path="/dashboard/village" element={<ProtectedRoute><VillageDashboard /></ProtectedRoute>} />
-        <Route path="/dashboard/taluka" element={<ProtectedRoute><TalukaDashboard /></ProtectedRoute>} />
-        <Route path="/dashboard/district" element={<ProtectedRoute><DistrictDashboard /></ProtectedRoute>} />
-        <Route path="/dashboard/zone" element={<ProtectedRoute><ZoneDashboard /></ProtectedRoute>} />
+        <Route path="/dashboard/admin" element={<ProtectedRoute allowedRoles={['admin']}><AdminDashboard /></ProtectedRoute>} />
+        <Route path="/dashboard/village" element={<ProtectedRoute allowedRoles={['village_coordinator', 'village']}><VillageDashboard /></ProtectedRoute>} />
+        <Route path="/dashboard/taluka" element={<ProtectedRoute allowedRoles={['taluka_coordinator', 'taluka']}><TalukaDashboard /></ProtectedRoute>} />
+        <Route path="/dashboard/district" element={<ProtectedRoute allowedRoles={['district_coordinator', 'district']}><DistrictDashboard /></ProtectedRoute>} />
+        <Route path="/dashboard/zone" element={<ProtectedRoute allowedRoles={['zone_coordinator', 'zone']}><ZoneDashboard /></ProtectedRoute>} />
         
         <Route path="/stats/readers" element={<ProtectedRoute><StatsReaders /></ProtectedRoute>} />
         <Route path="/stats/income" element={<ProtectedRoute><StatsIncome /></ProtectedRoute>} />

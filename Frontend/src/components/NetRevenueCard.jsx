@@ -29,7 +29,7 @@ export default function NetRevenueCard({ netRevenue = 0, todayNet = 0, adCommiss
       {/* Small Right Card */}
       <div className="sm:col-span-1 bg-white rounded-xl shadow-sm border-2 border-[#8B5A2B] p-6 flex flex-col justify-between">
         <div>
-          <h3 className="text-gray-700 font-bold mb-2">AD Commission</h3>
+          <h3 className="text-gray-700 font-bold mb-2">ADVT Revenue</h3>
           <div className="text-3xl font-extrabold text-[#28a745] mb-1">{format(adCommission)}</div>
           <div className="text-sm font-semibold text-gray-500 mb-6">
             +{format(todayAd)} today

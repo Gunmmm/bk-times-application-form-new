@@ -1,29 +1,40 @@
 import React from 'react';
 import { 
-  LayoutDashboard, 
   Users, 
-  ShieldAlert, 
   Settings, 
   Bell, 
   Percent, 
-  LogOut,
   ChevronRight,
-  UserCog,
   X,
-  Map,
   Home,
   FileText,
-  Activity,
-  Globe
+  Search,
+  User,
+  ShieldCheck,
+  LogIn,
+  Info
 } from 'lucide-react';
+
+// Safe fallbacks for missing icons
+const LayoutDashboard = Home;
+const ShieldAlert = ShieldCheck;
+const LogOut = LogIn;
+const UserCog = User;
+const Map = Search;
+const Activity = Info;
+const Globe = Search;
+const History = FileText;
 
 export default function AdminSidebar({ activeTab, setActiveTab, isOpen, setIsOpen }) {
   const menuItems = [
     { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
     { id: 'monitoring', label: 'Monitor Live', icon: Activity, group: 'Strategy' },
     { id: 'regional', label: 'Regional Overview', icon: Map, group: 'Strategy' },
+    { id: 'ads', label: 'Master ADV Inventory', icon: FileText, group: 'Strategy' },
+    { id: 'audit-log', label: 'System Audit Log', icon: History, group: 'Strategy' },
     
     { id: 'users', label: 'Master User Registry', icon: UserCog, group: 'Management' },
+    { id: 'readers', label: 'Master Subscriber Registry', icon: Users, group: 'Management' },
     { id: 'district', label: 'District Registry', icon: Users, group: 'Management' },
     { id: 'taluka', label: 'Taluka Registry', icon: Users, group: 'Management' },
     { id: 'zone', label: 'Zone Registry', icon: Users, group: 'Management' },

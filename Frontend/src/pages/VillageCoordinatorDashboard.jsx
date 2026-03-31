@@ -68,7 +68,7 @@ export default function VillageCoordinatorDashboard() {
             onClick={() => setIsModalOpen(true)}
             className="bg-blue-600 text-white px-8 py-4 rounded-2xl font-black text-[10px] uppercase tracking-widest shadow-xl shadow-blue-100 hover:bg-blue-700 transition active:scale-95"
           >
-            + Register New Reader
+            + REGISTER NEW SUBSCRIBER
           </button>
         </div>
 
@@ -80,7 +80,7 @@ export default function VillageCoordinatorDashboard() {
               <span className="text-[10px] font-black text-gray-300 uppercase">Total</span>
             </div>
             <p className="text-4xl font-black text-gray-900 tracking-tighter">{stats.total}</p>
-            <p className="text-[10px] font-bold text-gray-400 uppercase mt-1">Village Readers</p>
+            <p className="text-[10px] font-bold text-gray-400 uppercase mt-1">Village Subscribers</p>
           </div>
 
           <div className="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm">
@@ -89,7 +89,7 @@ export default function VillageCoordinatorDashboard() {
               <span className="text-[10px] font-black text-gray-300 uppercase">Prospects</span>
             </div>
             <p className="text-4xl font-black text-gray-900 tracking-tighter">{stats.guest}</p>
-            <p className="text-[10px] font-bold text-orange-500 uppercase mt-1">Guest Readers</p>
+            <p className="text-[10px] font-bold text-orange-500 uppercase mt-1">Guest Subscribers</p>
           </div>
 
           <div className="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm">
@@ -102,10 +102,10 @@ export default function VillageCoordinatorDashboard() {
           </div>
         </div>
 
-        {/* READERS TABLE */}
+        {/* SUBSCRIBERS TABLE */}
         <div className="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden">
           <div className="px-6 py-4 border-b border-gray-50 flex items-center justify-between bg-gray-50/30">
-            <h3 className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Active Readers Repository</h3>
+            <h3 className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Active Subscribers Repository</h3>
             <div className="flex items-center gap-2">
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3 h-3 text-gray-400" />
@@ -129,7 +129,7 @@ export default function VillageCoordinatorDashboard() {
                 {loading ? (
                   <tr><td colSpan="5" className="px-6 py-20 text-center text-[10px] font-bold text-gray-300 uppercase tracking-widest animate-pulse">Loading Village Repository...</td></tr>
                 ) : readers.length === 0 ? (
-                  <tr><td colSpan="5" className="px-6 py-20 text-center text-[10px] font-bold text-gray-400 uppercase tracking-widest">No readers found in {user?.village || 'this village'}</td></tr>
+                  <tr><td colSpan="5" className="px-6 py-20 text-center text-[10px] font-bold text-gray-400 uppercase tracking-widest">No subscribers found in {user?.village || 'this village'}</td></tr>
                 ) : readers.map((r, idx) => (
                   <tr key={r._id} className="hover:bg-blue-50/30 transition-colors">
                     <td className="px-6 py-4">
@@ -143,7 +143,7 @@ export default function VillageCoordinatorDashboard() {
                        <span className={`px-2 py-1 rounded-md text-[8px] font-black uppercase ${
                          r.type === 'guest' ? 'bg-orange-50 text-orange-600' : 'bg-blue-50 text-blue-600'
                        }`}>
-                         {r.type || 'Reader'}
+                         {r.type === 'guest' ? 'Guest' : 'Subscriber'}
                        </span>
                     </td>
                     <td className="px-6 py-4 text-right">

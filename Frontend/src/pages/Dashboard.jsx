@@ -71,7 +71,7 @@ export default function Dashboard() {
         <div className="my-6 px-1">
           <h1 className="text-2xl font-black text-gray-900 tracking-tighter uppercase tabular-nums">
             Welcome {user?.role === 'admin' ? 'Master Admin' : 
-                     user?.role === 'zone' ? 'Zone Coordinator' :
+                     user?.role === 'zone' ? 'Regional Coordinator' :
                      user?.role === 'district' ? 'District Coordinator' :
                      user?.role === 'taluka' ? 'Taluka Coordinator' :
                      user?.role === 'village' ? 'Village Coordinator' : 'Coordinator'}

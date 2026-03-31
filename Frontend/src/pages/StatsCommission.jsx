@@ -71,7 +71,7 @@ export default function StatsCommission() {
                   <th className="px-4 py-3 text-left">#</th>
                   <th className="px-4 py-3 text-left">Reader</th>
                   <th className="px-4 py-3 text-left">Plan</th>
-                  <th className="px-4 py-3 text-right">Commission (18%)</th>
+                  <th className="px-4 py-3 text-left text-right">Commission Earned</th>
                   <th className="px-4 py-3 text-right">% of Total</th>
                   <th className="px-4 py-3 text-left">Date</th>
                 </tr>

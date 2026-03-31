@@ -32,8 +32,8 @@ export default function StatsReaders() {
 
   return (
     <DetailPageWrapper
-      title="Total Registered Readers"
-      subtitle={`${readers.length} reader${readers.length !== 1 ? 's' : ''} registered`}
+      title="Total Registered Subscribers"
+      subtitle={`${readers.length} subscriber${readers.length !== 1 ? 's' : ''} registered`}
     >
       {/* Search */}
       <div className="mb-4 mt-2">
@@ -47,9 +47,9 @@ export default function StatsReaders() {
       </div>
 
       {loading ? (
-        <p className="text-gray-400 animate-pulse">Loading readers...</p>
+        <p className="text-gray-400 animate-pulse">Loading subscribers...</p>
       ) : filtered.length === 0 ? (
-        <p className="text-gray-400">No readers found.</p>
+        <p className="text-gray-400">No subscribers found.</p>
       ) : (
         <div className="space-y-2">
           {filtered.map((reader, i) => {
@@ -143,7 +143,7 @@ export default function StatsReaders() {
           })}
 
           <div className="mt-4 text-sm text-gray-500 font-medium">
-            Showing {filtered.length} of {readers.length} readers
+            Showing {filtered.length} of {readers.length} subscribers
           </div>
         </div>
       )}
